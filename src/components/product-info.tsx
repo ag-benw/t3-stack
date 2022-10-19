@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Button } from '../components/button';
 
 export function ProductInfo(props: ProductInfo) {
-  console.log(props)
   const price = `$${props.price.amount}`
   const [selectedSize, setSelectedSize] = useState(props.product.variants.nodes)
 
