@@ -21,7 +21,7 @@ async function getCollectionList() {
 
   const client = new Shopify.Clients.Graphql(
     'acidgreen-reporting.myshopify.com',
-    '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',
+    process.env.API_KEY,
   )
 
   const response = await client.query({
