@@ -29,7 +29,7 @@ export function Product(props: Handle) {
   const product = response.data.body.data.productByHandle;
   const price = response.data.body.data.productByHandle.priceRangeV2.maxVariantPrice;
   const images = response.data.body.data.productByHandle.images.nodes;
-  console.log(price)
+
   return (
     <div className="pt-6">
       <Breadcrumbs product={product} handle={props.handle} />
