@@ -1,33 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import { CollectionCard } from "./collection-card";
-import { fetchQuery } from "../utils/hooks";
 import { Callout } from "../types/types";
+import { trpc } from "../utils/trpc";
 
 export default function CollectionList() {
-  const query = `
-  query getCollections {
-    shop {
-      name
-    }
-    collections(first: 10) {
-      nodes {
-        id
-        title
-        description
-        handle
-        image {
-          altText
-          src
-          url
-        }
-      }
-    }
-  }  
-  `;
-
-  const { data, status } = useQuery(['Collections'], () => fetchQuery(query));
-
-  if (status === 'loading') {
+  const response = trpc.collectionListRouter.getCollectionList.useQuery('')
+  if (response.isLoading) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
@@ -38,16 +15,16 @@ export default function CollectionList() {
     );
   }
 
-  if (status === 'error') {
+  if (response.isError) {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
         <h2 className="text-2xl font-bold text-gray-900">Our Collections</h2>
-        <h4>Error!</h4>
+        <h4>Error</h4>
       </div>
     </div>
   }
 
-  const collection = data.data.collections.nodes
+  const collection = response.data.body.data.collections.nodes
 
   return (
     <>

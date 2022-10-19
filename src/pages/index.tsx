@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { QueryClientProvider, QueryClient } from "react-query";
 import CollectionList from "../components/collection-list";
+import { trpc } from "../utils/trpc";
 
 const queryClient = new QueryClient();
 

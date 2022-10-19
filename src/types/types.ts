@@ -35,7 +35,7 @@ export interface Product {
   title: string,
   handle: string,
   variants: [],
-  priceRange: {},
+  priceRangeV2: {},
   featuredImage: {},
 }
 
@@ -56,12 +56,7 @@ export interface Image {
 
 export interface ProductInfo {
   price: {
-    minVariantPrice: {
-      amount: number,
-    },
-    maxVariantPrice: {
-      amount: number,
-    },
+    amount: number,
   },
   product: {
     description: string,
@@ -70,7 +65,7 @@ export interface ProductInfo {
       id: string,
       url: string,
     },
-    priceRange: {
+    priceRangeV2: {
       minVariantPrice: {
         amount: number,
       },
@@ -97,7 +92,7 @@ export interface ProductCards {
   featuredImage: { 
     url: string,
     altText: string,
-    src: string,
+    id: string,
   },
   price: {
     minVariantPrice: {

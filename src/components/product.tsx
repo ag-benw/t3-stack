@@ -1,43 +1,12 @@
 import { Breadcrumbs } from "./breadcrumbs";
 import { ProductInfo } from "./product-info";
 import { ImageGallery } from "./image-gallery";
-import { fetchQuery } from "../utils/hooks";
-import { useQuery } from "@tanstack/react-query";
 import { Handle } from '../types/types';
+import { trpc } from '../utils/trpc';
 
 export function Product(props: Handle) {
-  const query = `
-  query product {
-    productByHandle(handle: "${props.handle}") {
-      priceRange {
-        minVariantPrice {
-          amount
-        }
-        maxVariantPrice {
-          amount
-        }
-      }
-      title
-      variants(first: 3) {
-        nodes {
-          title
-        }
-      }
-      images(first: 10) {
-        nodes {
-          url
-          altText
-          id
-        }
-      }
-      description
-    }
-  }
-  `;
-
-  const { data, status } = useQuery(['Product'], () => fetchQuery(query));
-
-  if (status === 'loading') {
+  const response = trpc.productRouter.getProduct.useQuery(`${props.handle}`)
+  if (response.isLoading) {
     return (
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -47,7 +16,7 @@ export function Product(props: Handle) {
     )
   }
 
-  if (status === 'error') {
+  if (response.isError) {
     return (
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -57,10 +26,10 @@ export function Product(props: Handle) {
     )
   }
 
-  const product = data.data.productByHandle
-  const price = data.data.productByHandle.priceRange;
-  const images = data.data.productByHandle.images.nodes
-
+  const product = response.data.body.data.productByHandle;
+  const price = response.data.body.data.productByHandle.priceRangeV2.maxVariantPrice;
+  const images = response.data.body.data.productByHandle.images.nodes;
+  console.log(price)
   return (
     <div className="pt-6">
       <Breadcrumbs product={product} handle={props.handle} />
