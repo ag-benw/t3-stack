@@ -1,9 +1,13 @@
 import { CollectionCard } from "./collection-card";
 import { Callout } from "../types/types";
 import { trpc } from "../utils/trpc";
+import { useRouter } from "next/router";
 
 export default function CollectionList() {
-  const response = trpc.collectionListRouter.getCollectionList.useQuery('')
+  const router = useRouter();
+  const path = router.asPath.substring(router.asPath.lastIndexOf("/") + 1);
+  const response = trpc.ShopifyRouter.collectionList.useQuery(path);
+  
   if (response.isLoading) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

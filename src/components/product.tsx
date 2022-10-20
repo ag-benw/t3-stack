@@ -3,9 +3,13 @@ import { ProductInfo } from "./product-info";
 import { ImageGallery } from "./image-gallery";
 import { Handle } from '../types/types';
 import { trpc } from '../utils/trpc';
+import { useRouter } from "next/router";
 
 export function Product(props: Handle) {
-  const response = trpc.productRouter.getProduct.useQuery(`${props.handle}`)
+  const router = useRouter();
+  const path = router.asPath.substring(router.asPath.lastIndexOf("/") + 1);
+  const response = trpc.ShopifyRouter.product.useQuery(path);
+
   if (response.isLoading) {
     return (
       <div className="bg-white">

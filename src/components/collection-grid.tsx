@@ -1,10 +1,14 @@
 import ProductCard from './product-card';
 import { Product, Collection } from '../types/types';
 import { trpc } from '../utils/trpc';
+import { useRouter } from 'next/router';
 
 
 export function Collection(props: Collection) {
-  const response = trpc.collectionRouter.getCollectionItem.useQuery(`${props.handle}`)
+  const router = useRouter();
+  const path = router.asPath.substring(router.asPath.lastIndexOf("/") + 1);
+  const response = trpc.ShopifyRouter.collection.useQuery(path);
+  
   if (response.isLoading) {
     return (
       <div className="bg-white">
